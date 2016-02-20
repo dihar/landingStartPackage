@@ -77,4 +77,4 @@ gulp.task('watch', function(){
 });
 
 gulp.task('service', ['bootstrap', 'jq']);
-gulp.task('default', ['serve']);
+gulp.task('default', ['serve','watch']);
