@@ -1,23 +1,21 @@
 @charset "utf-8";
 // @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300,600,700&subset=latin,cyrillic);
 
-@link: "../bower_components/bootstrap/less/";
+@bt_link: "../../bower_components/bootstrap/less/";
 // Core variables and mixins
 
-@import "@{link}variables.less";
-@import "@{link}mixins.less";
+@import url("@{bt_link}variables.less");
+@import url("@{bt_link}mixins.less");
+
+@import (inline) "./sprite.css";
 
 @img-path: 'imgs/';
 
-
 body{
 	font-family: 'Open Sans', sans-serif;
-	font-size: 18px;
+	font-size: 16px;
 	min-width: 320px;
 	margin: 0 auto;
 	color: #000;
-	background: #f8f8f8;
-	@media(max-width: 1060px){
-		font-size: 16px;
-	}
+	background: #000;
 }

@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "html5shiv": "^3.7.3",
-    "respond": "^1.4.2"
+    "respond": "^1.4.2",
+    "lightbox2": "^2.8.2"
   }
 }
