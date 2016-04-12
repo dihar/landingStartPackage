@@ -12,8 +12,7 @@ const uglify       = require("gulp-uglify");
 const reload       = browserSync.reload;
 const sourcemaps   = require('gulp-sourcemaps');
 const spritesmith  = require('gulp.spritesmith');
-const path         = require('path');
-const through2     = require('through2');
+const del          = require('del');
 
 const destPath     = './dist/';
 const srcPath      = './src/';
@@ -28,6 +27,9 @@ gulp.task('serve', ()=>{
 	});
 });
 
+gulp.task('clean:imgs', ()=>{
+	del(destPath + 'imgs/**/!(sprite).*');
+});
 
 gulp.task('jq', ()=>{
 	return gulp.src(['bower_components/jquery/dist/jquery.js',
@@ -45,7 +47,8 @@ gulp.task('bootstrap', ()=>{
 	    }))
 	    .pipe(minify())
 	    .pipe(rename('bootstrap.css'))
-	    .pipe(gulp.dest(destPath + 'css/'));
+	    .pipe(gulp.dest(destPath + 'css/'))
+	    .pipe(browserSync.stream());
 });
 
 gulp.task('js',()=>{
@@ -78,29 +81,39 @@ gulp.task('less', ()=>{
 	    .pipe(sourcemaps.write(destPath + 'css/'))
 	    .pipe(gulp.dest('./'))
 	    .pipe(browserSync.stream());
-})
+});
 
 gulp.task('sprite',()=>{
 	let spriteData = 
 		gulp.src(srcPath + 'imgs/sprite/*.*')
 			.pipe(spritesmith({
 			    imgName: 'sprite.png',
-			    cssName: 'sprite.css',
-			    imgPath: destPath + 'img/sprite.png'
+			    cssName: 'sprite.less',
+			    imgPath: destPath + 'imgs/sprite.png'
 			}));
 
-	spriteData.img.pipe(gulp.dest(destPath + 'img/'));
+	spriteData.img.pipe(gulp.dest(destPath + 'imgs/'));
     spriteData.css.pipe(gulp.dest(srcPath + 'less/'));
+});
 
-})
+gulp.task('images',['clean:imgs'],()=>{
+	return gulp.src([srcPath + 'imgs/**/*.*', '!' + srcPath + 'imgs/sprite/*.*'])
+		.pipe(gulp.dest(destPath + 'imgs/'))
+		.pipe(browserSync.stream());
+});
 
 gulp.task('watch', ()=>{
 	gulp.watch([srcPath + 'js/main.js'], ['js']);
-	gulp.watch([srcPath + 'less/*.less'], ['less'])
-	gulp.watch(['./*.html'], reload)
+	gulp.watch([srcPath + 'less/!(bootstrap.less).less'], ['less']);
+	gulp.watch([srcPath + 'less/bootstrap.less'], ['bootstrap']);
+	gulp.watch([srcPath + 'imgs/sprite/*.*'], ['sprite']);
+	gulp.watch([srcPath + 'imgs/**/*.*', '!' + srcPath + 'imgs/sprite/*.*'], ['images']);
+
+	gulp.watch(['./*.html'], reload);
+
 });
 
 
 
-gulp.task('service', ['bootstrap', 'jq']);
+gulp.task('service', ['jq']);
 gulp.task('default', ['serve','watch']);

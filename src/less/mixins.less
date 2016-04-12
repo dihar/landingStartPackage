@@ -1,0 +1,21 @@
+
+
+.sprite-names-icons(@sprites, @i: 1) when (@i <= length(@sprites)) {
+	@sprite: extract(@sprites, @i);
+	@sprite-name: e(extract(@sprite, 10));
+	.icon-@{sprite-name} {
+		.sprite(@sprite);
+	}
+	.sprite-names-icons(@sprites, @i + 1);
+}
+
+
+.sprite-names-icons-hover(@sprites, @sprites-hover, @i: 1) when (@i <= length(@sprites)) {
+	@sprite: extract(@sprites, @i);
+	@sprite-name: e(extract(@sprite, 10));
+	@sprite-hover: e(extract(@sprites-hover, @i));
+	.icon-@{sprite-name} {
+		.sprite-position(@sprite-hover);
+	}
+	.sprite-names-icons-hover(@sprites, @sprites-hover, @i + 1)
+}
