@@ -1,4 +1,9 @@
-
+.sprite-scale(@sprite, @k: 1){
+	width: floor(extract(@sprite, 5) * @k);
+	height: floor(extract(@sprite, 6) * @k);
+	background-position: extract(@sprite, 3) * @k extract(@sprite, 4) * @k;
+	background-size: floor(@spritesheet-width * @k) floor(@spritesheet-height * @k);
+}
 
 .sprite-names-icons(@sprites, @i: 1) when (@i <= length(@sprites)) {
 	@sprite: extract(@sprites, @i);
